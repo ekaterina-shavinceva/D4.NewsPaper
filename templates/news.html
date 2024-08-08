@@ -36,12 +36,7 @@
                <td>{{ post.rating }}</td>
                <td><a href="{% url 'post_update' pk=post.id %}"> Изменить </a></td>
                <td><a href="{% url 'post_delete' post.id %}"> Удалить </a></td>
-
-
            </tr>
-
-
-
 
 
    {% endfor %}
