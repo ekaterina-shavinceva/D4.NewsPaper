@@ -5,6 +5,7 @@ from django.db.models.functions import Coalesce
 from django.contrib import admin
 from django.urls import path, include
 from .resources import CONTENT, news
+from django.urls import reverse
 
 urlpatterns = [
    path('admin/', admin.site.urls),
@@ -15,6 +16,9 @@ urlpatterns = [
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user.username
 
     def update_rating(self):
         posts_rating = self.posts.aggregate(pr=Coalesce(Sum('rating'), 0))['pr']
@@ -33,6 +37,9 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Post(models.Model):
@@ -57,6 +64,9 @@ class Post(models.Model):
 
     def __str__(self):
         return f'Заголовок: {self.title}. Содержание: {self.text}. {self.post_time}. Рейтинг: {self.rating}'
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):
