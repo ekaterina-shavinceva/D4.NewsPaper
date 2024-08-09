@@ -24,6 +24,7 @@ class PostsList(ListView):
         context['time_now'] = datetime.utcnow()
         return context
 
+
 class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
@@ -47,25 +48,6 @@ class NewsSearch(ListView):
         context['filterset'] = self.filterset
         return context
 
-class NewsPostList(ListView):
-    model = Post
-    ordring = '-date'
-    template_name = 'posts.html'
-    context_object_name = 'posts'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return Post.objects.filter(content='NE')
-
-class ArticlePostList(ListView):
-    model = Post
-    ordring = '-date'
-    template_name = 'article_list.html'
-    context_object_name = 'posts'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return Post.objects.filter(content='AR')
 
 class NewsCreate(CreateView):
     permission_required = ('news.add_post',)
@@ -75,19 +57,11 @@ class NewsCreate(CreateView):
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.content = news
+        if self.request.path == 'news/articles/create/':
+            post.content = article
+        post.save()
         return super().form_valid(form)
 
-class ArticlesCreate(CreateView):
-    permission_required = ('news.add_post',)
-    form_class = ArticlesForm
-    model = Post
-    template_name = 'post_edit.html'
-
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        post.content = article
-        return super().form_valid(form)
 
 class PostUpdate(UpdateView):
     permission_required = ('news.change_post',)
