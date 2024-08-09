@@ -2,8 +2,8 @@ from django.views.generic import (ListView, DetailView, CreateView, UpdateView, 
 from .models import Post
 from .filters import PostFilter
 from datetime import datetime
-from .forms import NewsForm, ArticlesForm
-from .resources import news, article
+from .forms import NewsForm
+from .resources import article
 from django.urls import reverse_lazy
 
 class PostsList(ListView):
@@ -48,7 +48,6 @@ class NewsSearch(ListView):
         context['filterset'] = self.filterset
         return context
 
-
 class NewsCreate(CreateView):
     permission_required = ('news.add_post',)
     form_class = NewsForm
@@ -72,4 +71,4 @@ class PostUpdate(UpdateView):
 class PostDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('post_list')
+    success_url = reverse_lazy('post_list') 
