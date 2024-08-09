@@ -7,7 +7,7 @@ class NewsForm(forms.ModelForm):
     text = forms.CharField(min_length=1)
     class Meta:
         model = Post
-        fields = ['author', 'title', 'text', 'post_type', 'category']
+        fields = ['author', 'title', 'text', 'category']
 
     def clean(self):
         cleaned_data = super().clean()
@@ -24,7 +24,7 @@ class ArticlesForm(forms.ModelForm):
     text = forms.CharField(min_length=1)
     class Meta:
         model = Post
-        fields = ['author', 'title', 'text', 'post_type', 'category']
+        fields = ['author', 'title', 'text', 'category']
 
     def clen(self):
         cleaned_data = super().clean()
